@@ -1,0 +1,94 @@
+tableOrder:
+  - jzyx.dw_label_user_out_yyyymmdd_mid
+  - jzyx.dm_user_financial_prefer_yyyymm_mid
+  - jzyx.dw_label_work_busi_out_yyyymm_mid
+  - jzyx.dw_label_busi_out_mid
+  - jzyx.dw_label_user_out_yyyymm_mid
+#  - jzyx.dw_label_user_out_mon
+
+
+#mainJoinTable: left table , used to left join
+mainJoinTable: jzyx.dw_label_user_out_yyyymm_mid
+
+idColumn: user_id
+# which month data is need to calc
+dataTime:
+
+metaStore:
+  driver: com.mysql.cj.jdbc.Driver
+#  url: jdbc:mysql://10.218.173.59:3306/af_marketing?useUnicode=true&characterEncoding=utf-8
+  url: jdbc:mysql://192.168.10.212:3306/af_marketing?useUnicode=true&characterEncoding=utf-8
+  user: root
+  password: Aofeng@10086~#
+  #  tbl_schedules: table name tbl_schedules,schedule report table    tbl_report: table name tbl_report, report table
+  tbl_schedules: tbl_schedules
+  tbl_report: tbl_report
+  # tbl_action:table name tbl_action
+  tbl_actions: tbl_actions
+  #columns of table tbl_actions.  atid: Activity id which is means markets. bstatus: Batch status. create_time:create time
+  atid: atid
+  bstatus: bstatus
+  create_time: create_time
+  tbl_batch_user: tbl_batch_user
+  #It's columns of tbl_batch_user
+  #userids
+  userids: userids
+  # monthAgo : Need to keep several months of data.
+  monthAgo: 6
+  #druid pool config
+  initialSize: 10
+  maxActive: 50
+  minIdle: 10
+  maxWait: 5000
+
+
+
+
+spark:
+  appName: BaseLabelsJob
+  master:
+  needsHive: true
+  configMapping:
+    spark.driver.allowMultipleContexts: true
+    hive.exec.dynamic.partition: true
+    hive.exec.dynamic.partition.mode: nonstrict
+    es.nodes: 10.218.173.60:9200,10.218.173.61:9200,10.218.173.62:9200
+#    es.nodes: 192.168.10.83:9200,192.168.10.84:9200
+
+redis:
+#  host: 192.168.10.212
+#  port: 6379
+#  password: aofeng@10086
+##需要同步的hive表(白名单表)
+#  table: jzyx.dm_white_name
+#  partitionField: month_id
+#  #白名单中的key名字
+#  set_key: white_sets
+
+es:
+  nodes: 10.218.173.60:9200,10.218.173.61:9200,10.218.173.62:9200
+#  nodes: 192.168.10.83:9200,192.168.10.84:9200
+  port: 9200
+  index: user_labels/doc
+  configMapping:
+    es.index.auto.create: true
+    es.nodes.wan.only: true
+    es.index.translog.durability: async
+    es.index.translog.sync_interval: 120s
+    es.index.translog.flush_threshold_size: 1024mb
+    es.index.translog.flush_threshold_period: 120m
+    es.index.refresh_interval: -1
+    es.http.timeout: 600s
+    es.batch.write.retry.count: 5
+    #    es.batch.write.refresh: false
+#    es.batch.size.bytes: 20mb
+    es.batch.size.bytes: 20mb
+    es.batch.write.retry.wait: 60s
+#    es.batch.size.entries: 20000
+    es.batch.size.entries: 70000
+    es.input.use.sliced.partitions: false
+
+hive:
+  tableName: jzyx.user_labels_finals
+  partitionField: month_id
+  idColumn: id

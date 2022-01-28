@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+    <!-- 定义日志文件 输入位置 -->
+    <property name="log_dir" value="./logs"/>
+    <!-- 日志最大的历史 7天 -->
+    <property name="maxHistory" value="7"/>
+
+    <!-- definition of appender STDOUT -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} +[%thread] %-5level - %msg%n</pattern>
+            <!--  <charset class="java.nio.charset.Charset">UTF-8</charset>   这样？-->　　　　　　　
+            <charset>UTF-8</charset> <!--防止乱码，设置字符集-->
+        </encoder>
+    </appender>
+
+    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/test.warn.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/test.info.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/test.debug.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/test.error.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <!--%d{yyyy-MM-dd HH:mm:ss.SSS}%-4relative [%thread] %-5level %logger{35} - -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <!-- appender referenced after it is defined -->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="FILE_WARN"/>
+        <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="FILE_DEBUG"/>
+    </root>
+</configuration>
+
+
+
+
+
+
+
+
+
+
+        <!--<configuration>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.authorization.storage.checks</name>-->
+        <!--          <value>false</value>-->
+        <!--        </property>-->
+        <!--        <property>-->
+        <!--          <name>hive.metastore.cache.pinobjtypes</name>-->
+        <!--          <value>Table,Database,Type,FieldSchema,Order</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.client.connect.retry.delay</name>-->
+        <!--          <value>5s</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.client.socket.timeout</name>-->
+        <!--          <value>1800s</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.connect.retries</name>-->
+        <!--          <value>24</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.dml.events</name>-->
+        <!--          <value></value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.execute.setugi</name>-->
+        <!--          <value>true</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.failure.retries</name>-->
+        <!--          <value>24</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.kerberos.keytab.file</name>-->
+        <!--          <value>/etc/security/keytabs/hive.service.keytab</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.kerberos.principal</name>-->
+        <!--          <value>hive/_HOST@EXAMPLE.COM</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.pre.event.listeners</name>-->
+        <!--          <value>org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.sasl.enabled</name>-->
+        <!--          <value>false</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.server.max.threads</name>-->
+        <!--          <value>100000</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.transactional.event.listeners</name>-->
+        <!--          <value></value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.uris</name>-->
+        <!--          <value>thrift://ambari1.test.com:9083</value>-->
+        <!--        </property>-->
+
+        <!--        <property>-->
+        <!--          <name>hive.metastore.warehouse.dir</name>-->
+        <!--          <value>/apps/hive/warehouse</value>-->
+        <!--        </property>-->
+        <!--        <property>-->
+        <!--          <name>hive.server2.enable.doAs</name>-->
+        <!--          <value>true</value>-->
+        <!--        </property>-->
+
+        <!--    <property>-->
+        <!--        <name>hive.execution.engine</name>-->
+        <!--        <value>mr</value>-->
+        <!--    </property>-->
+        <!--</configuration>-->
